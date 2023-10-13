@@ -52,7 +52,7 @@ Drive chassis (
 
 //PID Tuning for the flywheel
 pros::Motor l_fly(16, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor r_fly(13, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor r_fly(12, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
 void set_fly(int input) {
   l_fly = input;
   r_fly = input;
@@ -68,11 +68,11 @@ void fly_auto(double target) {
     set_fly(output);
     pros::delay(ez::util::DELAY_TIME);
   }
-  set_fly(0);
+  // set_fly(0);
 }
 
 
-pros::Motor index;
+
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -95,10 +95,8 @@ void initialize() {
 
   
   //p_small_exit_time time, in ms, before exiting p_small_error | p_small_error small error threshold| p_big_exit_time time, in ms, before exiting p_big_error | p_big_error big error threshold |p_velocity_exit_time time, in ms, for velocity to be 0 | p _mA_timeout time, in ms, for is_over_current to be true
-  flyPID.set_exit_condition(80, 30, 300, 100, 0, 500);
+  flyPID.set_exit_condition(0, 0, 0, 0, 0, 00);
 
-  //the motor for the high-power indexer
-  pros::Motor index (12, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
@@ -187,6 +185,7 @@ void autonomous() {
 void opcontrol() {
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
+  pros::Motor index (11, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
   while (true) {
 
     // chassis.tank(); // Tank control
