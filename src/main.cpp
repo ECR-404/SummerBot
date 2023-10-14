@@ -11,14 +11,14 @@
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {20, 21}
+  {1, 2}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{-19, -1}
+  ,{-3, -6}
 
-  // IMU Port
-  ,16
+  // Inertial Port
+  ,7
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
@@ -51,8 +51,8 @@ Drive chassis (
 );
 
 //PID Tuning for the flywheel
-pros::Motor l_fly(16, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor r_fly(12, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
 void set_fly(int input) {
   l_fly = input;
   r_fly = input;
@@ -66,6 +66,7 @@ void fly_auto(double target) {
   while (flyPID.exit_condition({l_fly, r_fly}, true) == ez::RUNNING) {
     double output = flyPID.compute(l_fly.get_position());
     set_fly(output);
+    target *= 2;
     pros::delay(ez::util::DELAY_TIME);
   }
   // set_fly(0);
@@ -185,11 +186,11 @@ void autonomous() {
 void opcontrol() {
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  pros::Motor index (11, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+  pros::Motor index (10, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
   while (true) {
 
-    // chassis.tank(); // Tank control
-    chassis.arcade_standard(ez::SPLIT); // Standard split arcade
+    chassis.tank(); // Tank control
+    // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
     // chassis.arcade_flipped(ez::SPLIT); // Flipped split arcade
     // chassis.arcade_flipped(ez::SINGLE); // Flipped single arcade
@@ -200,10 +201,11 @@ void opcontrol() {
 
     //i still don't know if these control statements work
     if (master.get_digital(DIGITAL_L1)) {
-      flyPID.set_target(600);
+      
+      fly_auto(30000);
     }
     else if (master.get_digital(DIGITAL_L2)) {
-      flyPID.set_target(0);
+      fly_auto(0);
     }
 
     if(master.get_digital(DIGITAL_R2)){
