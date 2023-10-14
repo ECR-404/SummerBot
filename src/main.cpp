@@ -1,5 +1,5 @@
 #include "main.h"
-#include "niic.hpp"
+#include "iostream"
 
 /////
 // For instalattion, upgrading, documentations and tutorials, check out website!
@@ -11,7 +11,7 @@
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {1, 2}
+  {11, 2}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
@@ -189,9 +189,9 @@ void autonomous() {
 void opcontrol() {
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  pros::Motor index (10, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+  pros::Motor index (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
   while (true) {
-
+    //master.print(0, 0, "BRUH");
     chassis.tank(); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
@@ -208,13 +208,16 @@ void opcontrol() {
       l_fly.move_velocity(600);
       r_fly.move_velocity(600);
     }
-    else if (master.get_digital(DIGITAL_L2)) {
+    else /*if (master.get_digital(DIGITAL_L2))*/ {
       r_fly.brake();
       l_fly.brake();
+      std::cout<<"bruh bruh burh";
     }
 
     if(master.get_digital(DIGITAL_R2)){
       index.move_velocity(600);
+    }else{
+      index.brake();
     }
     // set_fly(flyPID.compute(l_fly.get_position()));
 
