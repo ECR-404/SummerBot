@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include "niic.hpp"
 
 /////
 // For instalattion, upgrading, documentations and tutorials, check out website!
@@ -53,24 +53,25 @@ Drive chassis (
 //PID Tuning for the flywheel
 pros::Motor l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
-void set_fly(int input) {
-  l_fly = input;
-  r_fly = input;
-}
-PID flyPID{0.45, 0, 0, 0, "Fly"};
+// void set_fly(int input) {
+//   l_fly = input;
+//   r_fly = input;
+// }
+// PID flyPID{0.45, 0, 0, 0, "Fly"};
 
 
-void fly_auto(double target) {
-  flyPID.set_target(target);
-  ez::exit_output exit = ez::RUNNING;
-  while (flyPID.exit_condition({l_fly, r_fly}, true) == ez::RUNNING) {
-    double output = flyPID.compute(l_fly.get_position());
-    set_fly(output);
-    target *= 2;
-    pros::delay(ez::util::DELAY_TIME);
-  }
-  // set_fly(0);
-}
+
+// void fly_auto(double target) {
+//   flyPID.set_target(target);
+//   ez::exit_output exit = ez::RUNNING;
+//   while (flyPID.exit_condition({l_fly, r_fly}, true) == ez::RUNNING) {
+//     double output = flyPID.compute(l_fly.get_position());
+//     set_fly(output);
+//     target *= 2;
+//     pros::delay(ez::util::DELAY_TIME);
+//   }
+//   // set_fly(0);
+// }
 
 
 
@@ -96,7 +97,9 @@ void initialize() {
 
   
   //p_small_exit_time time, in ms, before exiting p_small_error | p_small_error small error threshold| p_big_exit_time time, in ms, before exiting p_big_error | p_big_error big error threshold |p_velocity_exit_time time, in ms, for velocity to be 0 | p _mA_timeout time, in ms, for is_over_current to be true
-  flyPID.set_exit_condition(0, 0, 0, 0, 0, 00);
+  // flyPID.set_exit_condition(0, 0, 0, 0, 0, 00);
+  l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
 
 
@@ -202,16 +205,18 @@ void opcontrol() {
     //i still don't know if these control statements work
     if (master.get_digital(DIGITAL_L1)) {
       
-      fly_auto(30000);
+      l_fly.move_velocity(600);
+      r_fly.move_velocity(600);
     }
     else if (master.get_digital(DIGITAL_L2)) {
-      fly_auto(0);
+      r_fly.brake();
+      l_fly.brake();
     }
 
     if(master.get_digital(DIGITAL_R2)){
       index.move_velocity(600);
     }
-    set_fly(flyPID.compute(l_fly.get_position()));
+    // set_fly(flyPID.compute(l_fly.get_position()));
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
