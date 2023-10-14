@@ -74,7 +74,13 @@ pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES
 // }
 
 
+// pros::ADIDigitalOut wingR;
+// pros::ADIDigitalOut wingL;
 
+// void setWing(bool state){
+//   wingR.set_value(state);
+//   wingL.set_value(state);
+// }
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -117,6 +123,9 @@ void initialize() {
     Auton("Combine all 3 movements", combining_movements),
     Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
+  // wingR pros::ADIDigitalOut(A);
+  // wingL pros::ADIDigitalOut(C);
+  
 
   // Initialize chassis and auton selector
   chassis.initialize();
@@ -220,6 +229,11 @@ void opcontrol() {
       index.brake();
     }
     // set_fly(flyPID.compute(l_fly.get_position()));
+    pros::ADIDigitalOut wingR ('C', false);
+    if(master.get_digital(DIGITAL_A)){
+      pros::master.print("work");
+      wingR.set_value(true);
+    }
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
