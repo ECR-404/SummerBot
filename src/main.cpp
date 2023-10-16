@@ -74,13 +74,13 @@ pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES
 // }
 
 
-// pros::ADIDigitalOut wingR;
-// pros::ADIDigitalOut wingL;
+pros::ADIDigitalOut wingR ('C', false);
+pros::ADIDigitalOut wingL ('A', false);
 
-// void setWing(bool state){
-//   wingR.set_value(state);
-//   wingL.set_value(state);
-// }
+ void setWing(bool state){
+  wingR.set_value(state);
+  wingL.set_value(state);
+}
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -213,7 +213,6 @@ void opcontrol() {
 
     //i still don't know if these control statements work
     if (master.get_digital(DIGITAL_L1)) {
-      
       l_fly.move_velocity(600);
       r_fly.move_velocity(600);
     }
@@ -228,11 +227,14 @@ void opcontrol() {
     }else{
       index.brake();
     }
+
     // set_fly(flyPID.compute(l_fly.get_position()));
-    pros::ADIDigitalOut wingR ('C', false);
+
     if(master.get_digital(DIGITAL_A)){
-      pros::master.print("work");
-      wingR.set_value(true);
+      master.print(0,0,"work");
+      setWing(true);
+    }else{
+      setWing(false);
     }
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
