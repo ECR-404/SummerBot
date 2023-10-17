@@ -75,7 +75,7 @@ pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES
 
 
 pros::ADIDigitalOut wingR ('C', false);
-pros::ADIDigitalOut wingL ('A', false);
+pros::ADIDigitalOut wingL ('F', false);
 
  void setWing(bool state){
   wingR.set_value(state);
