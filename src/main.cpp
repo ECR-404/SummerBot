@@ -75,7 +75,7 @@ void set_fly(int input) {
 
 
 pros::ADIDigitalOut wingR ('C', false);
-pros::ADIDigitalOut wingL ('A', false);
+pros::ADIDigitalOut wingL ('F', false);
 
  void setWing(bool state){
   wingR.set_value(state);
