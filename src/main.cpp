@@ -50,13 +50,13 @@ Drive chassis (
   // ,1
 );
 
-//PID Tuning for the flywheel
+//PID Tuning for the flywheel (unneccessary)
 pros::Motor l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
-// void set_fly(int input) {
-//   l_fly = input;
-//   r_fly = input;
-// }
+void set_fly(int input) {
+  l_fly = input;
+  r_fly = input;
+}
 // PID flyPID{0.45, 0, 0, 0, "Fly"};
 
 
@@ -123,13 +123,15 @@ void initialize() {
     Auton("Combine all 3 movements", combining_movements),
     Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
   });
-  // wingR pros::ADIDigitalOut(A);
-  // wingL pros::ADIDigitalOut(C);
   
 
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
+
+  //multithreading potential, idk if it's needed yet
+  // Task drive(chassis.tank);
+  // Task indexMotor(doIndex);
 }
 
 
@@ -181,6 +183,27 @@ void autonomous() {
 }
 
 
+//the method to do one button indexing
+pros::ADIDigitalIn indexBumper ('H');
+pros::ADIDigitalIn checkTri('G');
+pros::Motor indexMotor (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+void doIndex(){
+  //while the indexer is still moving back
+  while(!indexBumper.get_value()){
+    indexMotor.move_velocity(200);
+    pros::delay(2);
+  }
+  //while the indexer is cocked but there's no triball
+  while(!checkTri.get_value()){
+    pros::delay(2);
+  }
+  //to move the indexer until it shoots
+  while(indexBumper.get_value()){
+    indexMotor.move_velocity(200);
+    pros::delay(2);
+  }
+}
+
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -198,9 +221,14 @@ void autonomous() {
 void opcontrol() {
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  pros::Motor index (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+  bool toggle { false }; //This variable will keep state between loops or function calls
+
+  bool flyToggle = false; //same as above but for the flywheel
+
   while (true) {
     //master.print(0, 0, "BRUH");
+
+    
     chassis.tank(); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
@@ -211,32 +239,37 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
 
-    //i still don't know if these control statements work
-    if (master.get_digital(DIGITAL_L1)) {
-      l_fly.move_velocity(600);
-      r_fly.move_velocity(600);
-    }
-    else /*if (master.get_digital(DIGITAL_L2))*/ {
-      r_fly.brake();
-      l_fly.brake();
-      std::cout<<"bruh bruh burh";
+    //i still don't know if these control statements work (they do)
+    // if (master.get_digital(DIGITAL_L1)) {
+    //   l_fly.move_velocity(600);
+    //   r_fly.move_velocity(600);
+    // }
+    // else /*if (master.get_digital(DIGITAL_L2))*/ {
+    //   r_fly.brake();
+    //   l_fly.brake();
+    // }
+
+    if(master.get_digital_new_press(DIGITAL_L1)){
+      if(toggle){
+        set_fly(600);
+      }else{
+        set_fly(0);
+      }
+      toggle = !toggle;
     }
 
-    if(master.get_digital(DIGITAL_R2)){
-      index.move_velocity(600);
-    }else{
-      index.brake();
+    if(master.get_digital_new_press(DIGITAL_R2)){
+      doIndex();
     }
 
     // set_fly(flyPID.compute(l_fly.get_position()));
 
-    if(master.get_digital(DIGITAL_A)){
-      master.print(0,0,"work");
-      setWing(true);
-    }else{
-      setWing(false);
-    }
 
+
+    if(master.get_digital_new_press(DIGITAL_R1)) {
+      setWing(!toggle);    //When false go to true and in reverse
+      toggle = !toggle;    //Flip the toggle to match piston state
+    } 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }
