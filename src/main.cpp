@@ -108,7 +108,6 @@ void initialize() {
   l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
 
-
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
   // chassis.set_left_curve_buttons (pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT); // If using tank, only the left side is used. 
   // chassis.set_right_curve_buttons(pros::E_CONTROLLER_DIGITAL_Y,    pros::E_CONTROLLER_DIGITAL_A);
@@ -158,6 +157,7 @@ void disabled() {
  */
 void competition_initialize() {
   // . . .
+  
 }
 
 
@@ -184,24 +184,28 @@ void autonomous() {
 
 
 //the method to do one button indexing
-pros::ADIDigitalIn indexBumper ('H');
-pros::ADIDigitalIn checkTri('G');
+
+// pros::ADIDigitalIn checkTri('G');
+pros::Distance index_distance(1);
 pros::Motor indexMotor (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+
+int index_min = 66;
+
 void doIndex(){
   //while the indexer is still moving back
-  while(!indexBumper.get_value()){
-    indexMotor.move_velocity(200);
-    pros::delay(2);
-  }
   //while the indexer is cocked but there's no triball
-  while(!checkTri.get_value()){
-    pros::delay(2);
-  }
+
   //to move the indexer until it shoots
-  while(indexBumper.get_value()){
+  while(index_distance.get() < index_min + 5){
     indexMotor.move_velocity(200);
     pros::delay(2);
   }
+  pros::delay(20);
+  while(index_distance.get() >= index_min + 9){;
+    indexMotor.move_velocity(200);
+    pros::delay(2);
+  }
+  indexMotor.brake();
 }
 
 
@@ -219,12 +223,19 @@ void doIndex(){
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+  indexMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
   bool toggle { false }; //This variable will keep state between loops or function calls
 
   bool flyToggle = false; //same as above but for the flywheel
-
+  
+  while(index_distance.get() >= index_min + 12){
+    indexMotor.move_velocity(200);
+    pros::delay(2);
+  }
+  indexMotor.brake();
   while (true) {
     //master.print(0, 0, "BRUH");
 
@@ -251,7 +262,7 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_L1)){
       if(toggle){
-        set_fly(600);
+        set_fly(500);
       }else{
         set_fly(0);
       }
