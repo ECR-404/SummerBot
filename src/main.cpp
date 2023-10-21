@@ -1,5 +1,6 @@
 #include "main.h"
 #include "iostream"
+#include "niic.hpp"
 
 /////
 // For instalattion, upgrading, documentations and tutorials, check out website!
@@ -41,7 +42,7 @@ Drive chassis (
   // ,8 // Rotation sensor
 
   // Right Tracking Wheel Ports (negative port will reverse it!)
-  // ,{-3, -4} // 3 wire encoder
+  // ,{-3, -4} // 3 wire encoder      
   // ,-9 // Rotation sensor
   */
 
@@ -51,8 +52,8 @@ Drive chassis (
 );
 
 //PID Tuning for the flywheel (unneccessary)
-pros::Motor l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
+// l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
+// r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
 void set_fly(int input) {
   l_fly = input;
   r_fly = input;
@@ -114,13 +115,14 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.add_autons({
-    Auton("Example Drive\n\nDrive forward and come back.", drive_example),
-    Auton("Example Turn\n\nTurn 3 times.", turn_example),
-    Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
-    Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
-    Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
-    Auton("Combine all 3 movements", combining_movements),
-    Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+    Auton("red side", drive_example),
+    // Auton("Example Turn\n\nTurn 3 times.", turn_example),
+    // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
+    // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
+    // Auton("Swing Example\n\nSwing, drive, swing.", swing_example),
+    // Auton("Combine all 3 movements", combining_movements),
+    // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+    // Auton("red side", red_side)
   });
   
 
@@ -157,7 +159,8 @@ void disabled() {
  */
 void competition_initialize() {
   // . . .
-  
+  l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 }
 
 
@@ -186,10 +189,10 @@ void autonomous() {
 //the method to do one button indexing
 
 // pros::ADIDigitalIn checkTri('G');
-pros::Distance index_distance(1);
-pros::Motor indexMotor (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+//  index_distance(1);
+//  indexMotor (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
-int index_min = 66;
+int index_min = 10;
 
 void doIndex(){
   //while the indexer is still moving back
