@@ -75,13 +75,10 @@ void set_fly(int input) {
 // }
 
 
-pros::ADIDigitalOut wingR ('C', false);
-pros::ADIDigitalOut wingL ('F', false);
-
- void setWing(bool state){
-  wingR.set_value(state);
-  wingL.set_value(state);
-}
+//  void setWing(bool state){
+//   wingR.set_value(state);
+//   wingL.set_value(state);
+// }
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -117,6 +114,7 @@ void initialize() {
   ez::as::auton_selector.add_autons({
     Auton("red side", drive_example),
     Auton("blue side", blue_auton),
+    Auton("drive forward (near side)", drive_fwd),
     Auton("ONLY RUN FOR SKILLS", skills),
     // Auton("Example Turn\n\nTurn 3 times.", turn_example),
     // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),

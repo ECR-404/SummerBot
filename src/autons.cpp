@@ -69,7 +69,10 @@ void modified_exit_condition() {
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
 
-
+//  void setWing(bool state){
+//   wingR.set_value(state);
+//   wingL.set_value(state);
+// }
 
 ///
 // Drive Example
@@ -89,11 +92,6 @@ void drive_example() {
 
 //   chassis.set_drive_pid(-12, DRIVE_SPEED);
 //   chassis.wait_drive();
-  chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
-
   l_fly.move_velocity(400);
   r_fly.move_velocity(400);
   pros::delay(1000);
@@ -106,10 +104,10 @@ void drive_example() {
 }
 
 void skills(){
-  chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
+  // chassis.set_drive_pid(7, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_turn_pid(45, TURN_SPEED);
+  // chassis.wait_drive();
   l_fly.move_velocity(400);
   r_fly.move_velocity(400);
   pros::delay(1000);
@@ -138,9 +136,13 @@ void blue_auton(){
     failsafe += 2;
   }
 }
-// void red_side(){
-  
-// }
+void drive_fwd(){
+  setWing(true);
+  chassis.set_drive_pid(7, DRIVE_SPEED);
+  chassis.wait_drive();
+}
+
+
 
 ///
 // Turn Example
