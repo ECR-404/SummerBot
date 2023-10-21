@@ -104,6 +104,23 @@ void drive_example() {
   }
 }
 
+void skills(){
+  chassis.set_drive_pid(7, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(45, TURN_SPEED);
+  chassis.wait_drive();
+  l_fly.move_velocity(400);
+  r_fly.move_velocity(400);
+  pros::delay(1000);
+  while(1){
+    while( index_distance.get() > 12){
+      indexMotor.move_velocity(200);
+      pros::delay(2);
+    }
+    pros::delay(500);
+  }
+}
+
 
 // void red_side(){
   
