@@ -192,20 +192,25 @@ void autonomous() {
 //  index_distance(1);
 //  indexMotor (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
-int index_min = 10;
+int index_min = 15;
 
 void doIndex(){
   //while the indexer is still moving back
   //while the indexer is cocked but there's no triball
 
+  //to make sure this doesn't softlock the program
+  int failsafe  = 0;
   //to move the indexer until it shoots
-  while(index_distance.get() < index_min + 5){
+  while(failsafe < 4000 && index_distance.get() < index_min + 5){
     indexMotor.move_velocity(200);
     pros::delay(2);
+    failsafe += 2;
   }
   pros::delay(20);
-  while(index_distance.get() >= index_min + 9){;
+  failsafe = 0;
+  while(failsafe < 4000 && index_distance.get() >= index_min + 9){;
     indexMotor.move_velocity(200);
+    failsafe += 2;
     pros::delay(2);
   }
   indexMotor.brake();
@@ -233,10 +238,11 @@ void opcontrol() {
   bool toggle { false }; //This variable will keep state between loops or function calls
 
   bool flyToggle = false; //same as above but for the flywheel
-  
-  while(index_distance.get() >= index_min + 12){
+  int failsafe = 0;
+  while(failsafe < 4000 && index_distance.get() >= index_min + 5){
     indexMotor.move_velocity(200);
     pros::delay(2);
+    failsafe += 2;
   }
   indexMotor.brake();
   while (true) {
@@ -265,7 +271,7 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_L1)){
       if(toggle){
-        set_fly(500);
+        set_fly(450);
       }else{
         set_fly(0);
       }

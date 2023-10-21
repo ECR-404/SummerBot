@@ -94,13 +94,14 @@ void drive_example() {
   chassis.set_turn_pid(45, TURN_SPEED);
   chassis.wait_drive();
 
-  // l_fly.move_velocity(400);
-  // r_fly.move_velocity(400);
-  // pros::delay(1000);
-  // while(index_distance.get() > 5){
-  //   indexMotor.move_velocity(200);
-  //   pros::delay(2);
-  // }
+  l_fly.move_velocity(400);
+  r_fly.move_velocity(400);
+  pros::delay(1000);
+  int failsafe = 0;
+  while( index_distance.get() > 5){
+    indexMotor.move_velocity(200);
+    pros::delay(2);
+  }
 }
 
 
