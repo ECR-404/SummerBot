@@ -208,7 +208,7 @@ void doIndex(){
   }
   pros::delay(20);
   failsafe = 0;
-  while(failsafe < 4000 && index_distance.get() >= index_min + 9){;
+  while(failsafe < 4000 &&index_distance.get() >= index_min + 3){;
     indexMotor.move_velocity(200);
     failsafe += 2;
     pros::delay(2);
@@ -269,9 +269,9 @@ void opcontrol() {
     //   l_fly.brake();
     // }
 
-    if(master.get_digital_new_press(DIGITAL_L1)){
+    if(master.get_digital_new_press(DIGITAL_R1)){
       if(toggle){
-        set_fly(450);
+        set_fly(400);
       }else{
         set_fly(0);
       }
@@ -286,7 +286,7 @@ void opcontrol() {
 
 
 
-    if(master.get_digital_new_press(DIGITAL_R1)) {
+    if(master.get_digital_new_press(DIGITAL_L1)) {
       setWing(!toggle);    //When false go to true and in reverse
       toggle = !toggle;    //Flip the toggle to match piston state
     } 
