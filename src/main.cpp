@@ -134,7 +134,6 @@ void initialize() {
 
   //multithreading potential, idk if it's needed yet
   // Task drive(chassis.tank);
-  // Task indexMotor(doIndex);
 }
 
 
@@ -203,14 +202,14 @@ void doIndex(){
   //to make sure this doesn't softlock the program
   int failsafe  = 0;
   //to move the indexer until it shoots
-  while(failsafe < 4000 && index_distance.get() < index_min + 5){
+  while(failsafe < 3000 && index_distance.get() < index_min + 5){
     indexMotor.move_velocity(200);
     pros::delay(2);
     failsafe += 2;
   }
   pros::delay(20);
   failsafe = 0;
-  while(failsafe < 4000 &&index_distance.get() >= index_min + 3){;
+  while(failsafe < 3000 &&index_distance.get() >= index_min + 3){;
     indexMotor.move_velocity(200);
     failsafe += 2;
     pros::delay(2);
@@ -218,6 +217,15 @@ void doIndex(){
   indexMotor.brake();
 }
 
+//task handler
+void indexler(){
+  while(1){
+    if(master.get_digital_new_press(DIGITAL_R2)){
+      doIndex();
+    }
+    pros::delay(2);
+  }
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -233,6 +241,8 @@ void doIndex(){
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+
+  pros::Task indexTask(indexler);
   indexMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
   // This is preference to what you like to drive on.
@@ -280,9 +290,10 @@ void opcontrol() {
       toggle = !toggle;
     }
 
-    if(master.get_digital_new_press(DIGITAL_R2)){
-      doIndex();
-    }
+    // if(master.get_digital_new_press(DIGITAL_R2)){
+    //   // indexTask.join();
+    //   doIndex();
+    // }
 
     // set_fly(flyPID.compute(l_fly.get_position()));
 
