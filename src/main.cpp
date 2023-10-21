@@ -245,7 +245,7 @@ void opcontrol() {
 
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  bool toggle { false }; //This variable will keep state between loops or function calls
+  bool toggle { true }; //This variable will keep state between loops or function calls
 
   bool flyToggle = false; //same as above but for the flywheel
   int failsafe = 0;
