@@ -137,7 +137,7 @@ void blue_auton(){
   r_fly.move_velocity(400);
   pros::delay(3000);
   int failsafe =0;
-  while(failsafe < 5000 && index_distance.get() > 2){
+  while(failsafe < 5000){
     indexMotor.move_velocity(200);
     pros::delay(2);
     failsafe += 2;
