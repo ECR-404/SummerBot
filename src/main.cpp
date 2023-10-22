@@ -247,10 +247,22 @@ void opcontrol() {
     failsafe += 2;
   }
   indexMotor.brake();
+  int n = 0;
+  //to draw a 404 logo during a match
+  pros::screen::set_eraser(COLOR_BLACK);
+  pros::screen::erase();
+  pros::screen::set_pen(COLOR_CADET_BLUE);
+  pros::screen::fill_rect(0, 0, 480, 20);
+  pros::screen::fill_rect(0, 232, 480, 252);
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "!404Z!");
+  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "Number of Shots: %n");
+  
+
   while (true) {
     //master.print(0, 0, "BRUH");
-
     
+    // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 5, "                       404");
+
     chassis.tank(); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
@@ -281,6 +293,7 @@ void opcontrol() {
     }
 
     if(master.get_digital_new_press(DIGITAL_R2)){
+      n++;
       doIndex();
     }
 
