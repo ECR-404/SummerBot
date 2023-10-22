@@ -255,15 +255,12 @@ void opcontrol() {
     failsafe += 2;
   }
   indexMotor.brake();
-  int n = 0;
   //to draw a 404 logo during a match
   pros::screen::set_eraser(COLOR_BLACK);
   pros::screen::erase();
   pros::screen::set_pen(COLOR_CADET_BLUE);
   pros::screen::fill_rect(0, 0, 480, 20);
-  pros::screen::fill_rect(0, 232, 480, 252);
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "!404Z!");
-  pros::screen::print(pros::E_TEXT_MEDIUM_CENTER, 7, "Number of Shots: %n");
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "404Z!");
   
 
   while (true) {
