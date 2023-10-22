@@ -75,13 +75,10 @@ void set_fly(int input) {
 // }
 
 
-pros::ADIDigitalOut wingR ('C', false);
-pros::ADIDigitalOut wingL ('F', false);
-
- void setWing(bool state){
-  wingR.set_value(state);
-  wingL.set_value(state);
-}
+//  void setWing(bool state){
+//   wingR.set_value(state);
+//   wingL.set_value(state);
+// }
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -117,6 +114,7 @@ void initialize() {
   ez::as::auton_selector.add_autons({
     Auton("red side", drive_example),
     Auton("blue side", blue_auton),
+    Auton("drive forward (near side)", drive_fwd),
     Auton("ONLY RUN FOR SKILLS", skills),
     // Auton("Example Turn\n\nTurn 3 times.", turn_example),
     // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
@@ -134,7 +132,6 @@ void initialize() {
 
   //multithreading potential, idk if it's needed yet
   // Task drive(chassis.tank);
-  // Task indexMotor(doIndex);
 }
 
 
@@ -203,14 +200,14 @@ void doIndex(){
   //to make sure this doesn't softlock the program
   int failsafe  = 0;
   //to move the indexer until it shoots
-  while(failsafe < 4000 && index_distance.get() < index_min + 5){
+  while(failsafe < 3000 && index_distance.get() < index_min + 5){
     indexMotor.move_velocity(200);
     pros::delay(2);
     failsafe += 2;
   }
   pros::delay(20);
   failsafe = 0;
-  while(failsafe < 4000 &&index_distance.get() >= index_min + 3){;
+  while(failsafe < 3000 &&index_distance.get() >= index_min + 3){;
     indexMotor.move_velocity(200);
     failsafe += 2;
     pros::delay(2);
@@ -218,6 +215,15 @@ void doIndex(){
   indexMotor.brake();
 }
 
+//task handler
+void indexler(){
+  while(1){
+    if(master.get_digital_new_press(DIGITAL_R2)){
+      doIndex();
+    }
+    pros::delay(2);
+  }
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -233,11 +239,13 @@ void doIndex(){
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+
+  pros::Task indexTask(indexler);
   indexMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  bool toggle { false }; //This variable will keep state between loops or function calls
+  bool toggle { true }; //This variable will keep state between loops or function calls
 
   bool flyToggle = false; //same as above but for the flywheel
   int failsafe = 0;
@@ -292,10 +300,10 @@ void opcontrol() {
       toggle = !toggle;
     }
 
-    if(master.get_digital_new_press(DIGITAL_R2)){
-      n++;
-      doIndex();
-    }
+    // if(master.get_digital_new_press(DIGITAL_R2)){
+    //   n++;
+    //   doIndex();
+    // }
 
     // set_fly(flyPID.compute(l_fly.get_position()));
 

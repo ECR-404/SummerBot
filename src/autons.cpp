@@ -69,7 +69,10 @@ void modified_exit_condition() {
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
 
-
+//  void setWing(bool state){
+//   wingR.set_value(state);
+//   wingL.set_value(state);
+// }
 
 ///
 // Drive Example
@@ -89,29 +92,31 @@ void drive_example() {
 
 //   chassis.set_drive_pid(-12, DRIVE_SPEED);
 //   chassis.wait_drive();
-  chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
-
   l_fly.move_velocity(400);
   r_fly.move_velocity(400);
-  pros::delay(1000);
+  pros::delay(3000);
   int failsafe = 0;
-  while(failsafe < 4000 && index_distance.get() > 5){
+  while(failsafe < 5000 && index_distance.get() > 5){
     indexMotor.move_velocity(200);
     pros::delay(2);
     failsafe += 2;
   }
+  indexMotor.brake();
+  setWing(true);
+  chassis.set_turn_pid(-35, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(20, TURN_SPEED);
+  chassis.set_drive_pid(45, DRIVE_SPEED);
+  chassis.wait_drive();
 }
 
 void skills(){
-  chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(45, TURN_SPEED);
-  chassis.wait_drive();
-  l_fly.move_velocity(400);
-  r_fly.move_velocity(400);
+  // chassis.set_drive_pid(7, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_turn_pid(45, TURN_SPEED);
+  // chassis.wait_drive();
+  l_fly.move_velocity(420);
+  r_fly.move_velocity(420);
   pros::delay(1000);
   while(1){
     while( index_distance.get() > 12){
@@ -123,24 +128,28 @@ void skills(){
 }
 
 void blue_auton(){
-  chassis.set_drive_pid(7, DRIVE_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(-45, TURN_SPEED);
-  chassis.wait_drive();
+  // chassis.set_drive_pid(7, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_turn_pid(-45, TURN_SPEED);
+  // chassis.wait_drive();
 
   l_fly.move_velocity(400);
   r_fly.move_velocity(400);
-  pros::delay(1000);
-  int failsafe = 0;
-  while(failsafe < 4000 && index_distance.get() > 5){
+  pros::delay(3000);
+  int failsafe =0;
+  while(failsafe < 5000){
     indexMotor.move_velocity(200);
     pros::delay(2);
     failsafe += 2;
   }
+  indexMotor.brake();
 }
-// void red_side(){
-  
-// }
+void drive_fwd(){
+  chassis.set_drive_pid(25, DRIVE_SPEED);
+  chassis.wait_drive();
+}
+
+
 
 ///
 // Turn Example
