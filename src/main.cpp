@@ -12,14 +12,14 @@
 Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  {11, 2}
+  {4, 5}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{-3, -6}
+  ,{-2, -3}
 
   // Inertial Port
-  ,7
+  ,15
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
@@ -55,7 +55,7 @@ Drive chassis (
 // l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
 // r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
 void set_fly(int input) {
-  l_fly = input;
+  l_fly= input;
   r_fly = input;
 }
 // PID flyPID{0.45, 0, 0, 0, "Fly"};
@@ -160,6 +160,7 @@ void competition_initialize() {
   // . . .
   l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+  elevMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 }
 
 
@@ -185,45 +186,10 @@ void autonomous() {
 }
 
 
-//the method to do one button indexing
 
-// pros::ADIDigitalIn checkTri('G');
-//  index_distance(1);
-//  indexMotor (19, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
-int index_min = 15;
 
-void doIndex(){
-  //while the indexer is still moving back
-  //while the indexer is cocked but there's no triball
 
-  //to make sure this doesn't softlock the program
-  int failsafe  = 0;
-  //to move the indexer until it shoots
-  while(failsafe < 3000 && index_distance.get() < index_min + 5){
-    indexMotor.move_velocity(200);
-    pros::delay(2);
-    failsafe += 2;
-  }
-  pros::delay(20);
-  failsafe = 0;
-  while(failsafe < 3000 &&index_distance.get() >= index_min + 3){;
-    indexMotor.move_velocity(200);
-    failsafe += 2;
-    pros::delay(2);
-  }
-  indexMotor.brake();
-}
-
-//task handler
-void indexler(){
-  while(1){
-    if(master.get_digital_new_press(DIGITAL_R2)){
-      doIndex();
-    }
-    pros::delay(2);
-  }
-}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -240,21 +206,12 @@ void indexler(){
  */
 void opcontrol() {
 
-  pros::Task indexTask(indexler);
-  indexMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
   bool toggle { true }; //This variable will keep state between loops or function calls
 
   bool flyToggle = false; //same as above but for the flywheel
-  int failsafe = 0;
-  while(failsafe < 4000 && index_distance.get() >= index_min + 5){
-    indexMotor.move_velocity(200);
-    pros::delay(2);
-    failsafe += 2;
-  }
-  indexMotor.brake();
+
   while (true) {
     //master.print(0, 0, "BRUH");
 
@@ -295,8 +252,14 @@ void opcontrol() {
 
     // set_fly(flyPID.compute(l_fly.get_position()));
 
-
-
+    if(master.get_digital(DIGITAL_UP)){
+      elevMotor.move_velocity( 100);
+    }else if(master.get_digital(DIGITAL_DOWN)){
+      elevMotor.move_velocity(-100);
+    }else{
+      elevMotor.brake();
+    }
+    
     if(master.get_digital_new_press(DIGITAL_L1)) {
       setWing(!toggle);    //When false go to true and in reverse
       toggle = !toggle;    //Flip the toggle to match piston state

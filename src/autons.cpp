@@ -96,7 +96,7 @@ void drive_example() {
   r_fly.move_velocity(400);
   pros::delay(3000);
   int failsafe = 0;
-  while(failsafe < 5000 && index_distance.get() > 5){
+  while(failsafe < 4000 && index_distance.get() > 10){
     indexMotor.move_velocity(200);
     pros::delay(2);
     failsafe += 2;
@@ -145,7 +145,7 @@ void blue_auton(){
   indexMotor.brake();
 }
 void drive_fwd(){
-  chassis.set_drive_pid(25, DRIVE_SPEED);
+  chassis.set_drive_pid(30, DRIVE_SPEED);
   chassis.wait_drive();
 }
 
