@@ -212,10 +212,20 @@ void opcontrol() {
 
   bool flyToggle = false; //same as above but for the flywheel
 
+
+  //to draw a 404 logo during a match
+  pros::screen::set_eraser(COLOR_BLACK);
+  pros::screen::erase();
+  pros::screen::set_pen(COLOR_CADET_BLUE);
+  pros::screen::fill_rect(0, 0, 480, 20);
+  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "404Z!");
+
+  elevMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
   while (true) {
     //master.print(0, 0, "BRUH");
-
     
+    // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 5, "                       404");
+
     chassis.tank(); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
@@ -238,7 +248,7 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(toggle){
-        set_fly(400);
+        set_fly(-400);
       }else{
         set_fly(0);
       }
@@ -246,16 +256,16 @@ void opcontrol() {
     }
 
     // if(master.get_digital_new_press(DIGITAL_R2)){
-    //   // indexTask.join();
+    //   n++;
     //   doIndex();
     // }
 
     // set_fly(flyPID.compute(l_fly.get_position()));
 
     if(master.get_digital(DIGITAL_UP)){
-      elevMotor.move_velocity( 100);
+      elevMotor.move_velocity( -100);
     }else if(master.get_digital(DIGITAL_DOWN)){
-      elevMotor.move_velocity(-100);
+      elevMotor.move_velocity(100);
     }else{
       elevMotor.brake();
     }
