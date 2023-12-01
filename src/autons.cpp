@@ -94,15 +94,15 @@ void drive_example() {
 //   chassis.wait_drive();
   l_fly.move_velocity(400);
   r_fly.move_velocity(400);
-  pros::delay(3000);
-  int failsafe = 0;
-  while(failsafe < 4000 && index_distance.get() > 10){
-    indexMotor.move_velocity(200);
-    pros::delay(2);
-    failsafe += 2;
-  }
-  indexMotor.brake();
-  setWing(true);
+  // pros::delay(3000);
+  // int failsafe = 0;
+  // while(failsafe < 4000 && index_distance.get() > 10){
+  //   indexMotor.move_velocity(200);
+  //   pros::delay(2);
+  //   failsafe += 2;
+  // }
+  // indexMotor.brake();
+  // setWing(true);
   chassis.set_turn_pid(-35, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(20, TURN_SPEED);
@@ -118,13 +118,13 @@ void skills(){
   l_fly.move_velocity(420);
   r_fly.move_velocity(420);
   pros::delay(1000);
-  while(1){
-    while( index_distance.get() > 12){
-      indexMotor.move_velocity(200);
-      pros::delay(2);
-    }
-    pros::delay(500);
-  }
+  // while(1){
+  //   while( index_distance.get() > 12){
+  //     indexMotor.move_velocity(200);
+  //     pros::delay(2);
+  //   }
+  //   pros::delay(500);
+  // }
 }
 
 void blue_auton(){
@@ -136,13 +136,13 @@ void blue_auton(){
   l_fly.move_velocity(400);
   r_fly.move_velocity(400);
   pros::delay(3000);
-  int failsafe =0;
-  while(failsafe < 5000){
-    indexMotor.move_velocity(200);
-    pros::delay(2);
-    failsafe += 2;
-  }
-  indexMotor.brake();
+  // int failsafe =0;
+  // while(failsafe < 5000){
+  //   indexMotor.move_velocity(200);
+  //   pros::delay(2);
+  //   failsafe += 2;
+  // }
+  // indexMotor.brake();
 }
 void drive_fwd(){
   chassis.set_drive_pid(30, DRIVE_SPEED);

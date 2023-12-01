@@ -7,7 +7,7 @@
 static pros::Motor l_fly(7, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
 static pros::Motor r_fly(21, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
 static pros::Distance index_distance(3);
-static pros::ADIDigitalOut wingR ('G', false);
+static pros::ADIDigitalOut wingR ('F', false);
 static pros::Motor elevMotor(8, pros::E_MOTOR_GEAR_100, false, pros::E_MOTOR_ENCODER_DEGREES);
 
 
