@@ -19,7 +19,7 @@ Drive chassis (
   ,{-2, -3}
 
   // Inertial Port
-  ,15
+  ,13
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
@@ -112,8 +112,8 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.add_autons({
-    Auton("red side", drive_example),
-    Auton("blue side", blue_auton),
+    Auton("eft side", drive_example),
+    Auton("right side", blue_auton),
     Auton("drive forward (near side)", drive_fwd),
     Auton("ONLY RUN FOR SKILLS", skills),
     // Auton("Example Turn\n\nTurn 3 times.", turn_example),
@@ -248,7 +248,7 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(toggle){
-        set_fly(-400);
+        set_fly(400);
       }else{
         set_fly(0);
       }

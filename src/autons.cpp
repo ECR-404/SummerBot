@@ -83,31 +83,49 @@ void drive_example() {
 //   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
 //   // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
 
-
-//   chassis.set_drive_pid(24, DRIVE_SPEED, true);
-//   chassis.wait_drive();
-
-//   chassis.set_drive_pid(-12, DRIVE_SPEED);
-//   chassis.wait_drive();
-
-//   chassis.set_drive_pid(-12, DRIVE_SPEED);
-//   chassis.wait_drive();
-  l_fly.move_velocity(400);
-  r_fly.move_velocity(400);
-  // pros::delay(3000);
-  // int failsafe = 0;
-  // while(failsafe < 4000 && index_distance.get() > 10){
-  //   indexMotor.move_velocity(200);
-  //   pros::delay(2);
-  //   failsafe += 2;
-  // }
-  // indexMotor.brake();
+  chassis.set_drive_pid(24, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-20, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(90,TURN_SPEED);
+  chassis.set_drive_pid(-5, DRIVE_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(-1950, 100);
+  pros::delay(3200);
+  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(300, 100);
+  pros::delay(2500);
+  chassis.set_turn_pid(130, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(15, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(120, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+  // pros::delay(500);
+  // chassis.set_turn_pid(-10, TURN_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_drive_pid(22, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_drive_pid(-10, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_turn_pid(-60, TURN_SPEED);
+  // chassis.set_drive_pid(35, DRIVE_SPEED);
+  // chassis.wait_drive();
   // setWing(true);
-  chassis.set_turn_pid(-35, TURN_SPEED);
-  chassis.wait_drive();
-  chassis.set_turn_pid(20, TURN_SPEED);
-  chassis.set_drive_pid(45, DRIVE_SPEED);
-  chassis.wait_drive();
+  // chassis.set_turn_pid(-40,TURN_SPEED);
+  // chassis.set_drive_pid(20, DRIVE_SPEED);
+  // chassis.wait_drive();
+
+
+  //   chassis.set_drive_pid(5, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_turn_pid(-45, TURN_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_drive_pid(10, DRIVE_SPEED);
+  // chassis.wait_drive();
 }
 
 void skills(){
@@ -132,17 +150,25 @@ void blue_auton(){
   // chassis.wait_drive();
   // chassis.set_turn_pid(-45, TURN_SPEED);
   // chassis.wait_drive();
-
-  l_fly.move_velocity(400);
-  r_fly.move_velocity(400);
+  chassis.set_drive_pid(22, DRIVE_SPEED);
+  chassis.wait_drive();
+   chassis.set_turn_pid(20, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-15, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(-70, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-8, DRIVE_SPEED);
+  chassis.wait_drive();
+  
+   elevMotor.move_absolute(-2000, 100);
   pros::delay(3000);
-  // int failsafe =0;
-  // while(failsafe < 5000){
-  //   indexMotor.move_velocity(200);
-  //   pros::delay(2);
-  //   failsafe += 2;
-  // }
-  // indexMotor.brake();
+  chassis.set_drive_pid(15, DRIVE_SPEED);
+  // elevMotor.move_relative(500, 100);
+  chassis.wait_drive();
+  elevMotor.move_absolute(300, 100);
+  pros::delay(2000);
+  setWings(true);
 }
 void drive_fwd(){
   chassis.set_drive_pid(30, DRIVE_SPEED);
