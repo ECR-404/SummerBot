@@ -16,7 +16,7 @@ Drive chassis (
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is the sensored port (when trackers are not used!)
-  ,{-2, -3, 19}
+  ,{-2, -3, -19}
 
   // Inertial Port
   ,13
@@ -266,13 +266,15 @@ void opcontrol() {
     while(master.get_digital(DIGITAL_UP)){
       if(master.get_digital_new_press(DIGITAL_UP)){
         elevMotor.move_absolute(-1600, 100);
+        pros::delay(200);
       }
       elevMotor.move_velocity( -100);
     }
     while(master.get_digital(DIGITAL_DOWN)){
       elevMotor.move_absolute(-100, 100);
       if(master.get_digital_new_press(DIGITAL_DOWN)){
-        elevMotor.move_velocity(100);
+        elevMotor.move_absolute(-100, 100);
+        pros::delay(200);
       }
     }
     if(!master.get_digital(DIGITAL_DOWN) && !master.get_digital(DIGITAL_UP)){

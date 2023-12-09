@@ -168,7 +168,7 @@ void blue_auton(){
   chassis.wait_drive();
   elevMotor.move_absolute(300, 100);
   pros::delay(2000);
-  setWings(true);
+  setWing(true);
 }
 void drive_fwd(){
   chassis.set_drive_pid(30, DRIVE_SPEED);
