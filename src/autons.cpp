@@ -150,6 +150,8 @@ void blue_auton(){
   // chassis.wait_drive();
   // chassis.set_turn_pid(-45, TURN_SPEED);
   // chassis.wait_drive();
+
+  elevMotor.move_absolute(-100, 100);
   chassis.set_drive_pid(22, DRIVE_SPEED);
   chassis.wait_drive();
    chassis.set_turn_pid(20, TURN_SPEED);
@@ -161,12 +163,12 @@ void blue_auton(){
   chassis.set_drive_pid(-8, DRIVE_SPEED);
   chassis.wait_drive();
   
-   elevMotor.move_absolute(-2000, 100);
+  elevMotor.move_absolute(-2000, 100);
   pros::delay(3000);
   chassis.set_drive_pid(15, DRIVE_SPEED);
   // elevMotor.move_relative(500, 100);
   chassis.wait_drive();
-  elevMotor.move_absolute(300, 100);
+  elevMotor.move_absolute(-100, 100);
   pros::delay(2000);
 }
 void drive_fwd(){
