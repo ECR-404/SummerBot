@@ -19,7 +19,7 @@ Drive chassis (
   ,{-2, -3, -19}
 
   // Inertial Port
-  ,13
+  ,14
 
   // Wheel Diameter (Remember, 4" wheels are actually 4.125!)
   //    (or tracking wheel diameter)
@@ -112,7 +112,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.add_autons({
-    Auton("eft side", drive_example),
+    Auton("left side", drive_example),
     Auton("right side", blue_auton),
     Auton("drive forward (near side)", drive_fwd),
     Auton("ONLY RUN FOR SKILLS", skills),
@@ -177,6 +177,7 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+  stop.set_value(true);
   chassis.reset_pid_targets(); // Resets PID targets to 0
   chassis.reset_gyro(); // Reset gyro position to 0
   chassis.reset_drive_sensor(); // Reset drive sensors to 0
@@ -204,14 +205,16 @@ void autonomous() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+bool up, down = false;
+
 void opcontrol() {
 
   // This is preference to what you like to drive on.
   chassis.set_drive_brake(MOTOR_BRAKE_COAST);
-  bool toggle { true }; //This variable will keep state between loops or function calls
+  bool toggle { false }; //This variable will keep state between loops or function calls
 
-  bool flyToggle = false; //same as above but for the flywheel
-
+  stop.set_value(true);
 
   //to draw a 404 logo during a match
   pros::screen::set_eraser(COLOR_BLACK);
@@ -221,6 +224,10 @@ void opcontrol() {
   pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "404Z!");
 
   elevMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+  double t = 0;
+  bool stopped = true;
+
   while (true) {
     //master.print(0, 0, "BRUH");
     
@@ -247,7 +254,8 @@ void opcontrol() {
     // }
 
     if(master.get_digital_new_press(DIGITAL_R1)){
-      if(toggle){
+      if(!toggle){
+        elevMotor.move_absolute(-750, 100);
         set_fly(400);
       }else{
         set_fly(0);
@@ -262,26 +270,52 @@ void opcontrol() {
 
     // set_fly(flyPID.compute(l_fly.get_position()));
     
+    if(master.get_digital_new_press(DIGITAL_L1)){
+      up = true;
+      elevMotor.move_absolute(-1600, 100);
+    }
+    if(up && master.get_digital(DIGITAL_L1)){
+      elevMotor.move_velocity(-100);
+    }else{
+      up = false;
+    }
 
-    while(master.get_digital(DIGITAL_UP)){
-      if(master.get_digital_new_press(DIGITAL_UP)){
-        elevMotor.move_absolute(-1600, 100);
-        pros::delay(200);
-      }
-      elevMotor.move_velocity( -100);
-    }
-    while(master.get_digital(DIGITAL_DOWN)){
+    if(master.get_digital_new_press(DIGITAL_L2)){
+      down =true;
       elevMotor.move_absolute(-100, 100);
-      if(master.get_digital_new_press(DIGITAL_DOWN)){
-        elevMotor.move_absolute(-100, 100);
-        pros::delay(200);
-      }
     }
-    if(!master.get_digital(DIGITAL_DOWN) && !master.get_digital(DIGITAL_UP)){
+    if(down && master.get_digital(DIGITAL_L2)){
+      elevMotor.move_velocity(100);
+    }else{
+      down = false;
+    }
+
+    if(!master.get_digital(DIGITAL_L2) && !master.get_digital(DIGITAL_L1) && !toggle){
       elevMotor.brake();
     }
     
-    if(master.get_digital_new_press(DIGITAL_L1)) {
+    
+
+    // if(master.get_digital_new_press(DIGITAL_L2) || !master.get_digital(DIGITAL_L2)){
+    //   t=0;
+    // }
+    // while(master.get_digital(DIGITAL_L2)){
+    //   t+= ez::util::DELAY_TIME;
+    // }
+    // if(t >= 0.5){
+    //   stop.set_value(true);
+    //   stopped = true;
+    // }
+    // if(stopped && master.get_digital_new_press(DIGITAL_L2)){
+    //   stop.set_value(true);
+    //   stopped = false;
+    // }
+    if(master.get_digital_new_press(DIGITAL_UP)){
+      stop.set_value(!stopped);
+      stopped = !stopped;
+    }
+    
+    if(master.get_digital_new_press(DIGITAL_R2)) {
       setWing(!toggle);    //When false go to true and in reverse
       toggle = !toggle;    //Flip the toggle to match piston state
     } 

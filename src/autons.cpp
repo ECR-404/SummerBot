@@ -96,13 +96,13 @@ void drive_example() {
   chassis.wait_drive();
   elevMotor.move_absolute(300, 100);
   pros::delay(2500);
-  chassis.set_turn_pid(130, TURN_SPEED);
+  chassis.set_turn_pid(125, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(15, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(120, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.set_drive_pid(15, DRIVE_SPEED);
   chassis.wait_drive();
   // pros::delay(500);
   // chassis.set_turn_pid(-10, TURN_SPEED);
@@ -168,7 +168,6 @@ void blue_auton(){
   chassis.wait_drive();
   elevMotor.move_absolute(300, 100);
   pros::delay(2000);
-  setWing(true);
 }
 void drive_fwd(){
   chassis.set_drive_pid(30, DRIVE_SPEED);
