@@ -124,13 +124,43 @@ void left_auton() {
 }
 
 void skills(){
-  // chassis.set_drive_pid(7, DRIVE_SPEED);
-  // chassis.wait_drive();
-  // chassis.set_turn_pid(45, TURN_SPEED);
-  // chassis.wait_drive();
+  elevMotor.move_absolute(-200, 100);
+  pros::delay(200);
+  chassis.set_drive_pid(24, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-10, DRIVE_SPEED);
+  chassis.wait_drive();
+  pros::delay(200);
+  chassis.set_drive_pid(14, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-16, DRIVE_SPEED);
+  chassis.wait_drive();
+
+  chassis.set_turn_pid(90, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-12, DRIVE_SPEED);
+  chassis.wait_drive();
+  if(chassis.interfered){
+    chassis.set_drive_pid(0, DRIVE_SPEED);
+  }  elevMotor.move_absolute(-700, 100);
+  pros::delay(1000); 
   l_fly.move_velocity(420);
-  r_fly.move_velocity(420);
+  pros::delay(30000);
+  l_fly.brake();
+  chassis.set_turn_pid(180, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(110, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(40, DRIVE_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(-700, 100);
   pros::delay(1000);
+  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(-50, 100);
+
   // while(1){
   //   while( index_distance.get() > 12){
   //     indexMotor.move_velocity(200);
