@@ -69,15 +69,10 @@ void modified_exit_condition() {
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
 
-//  void setWing(bool state){
-//   wingR.set_value(state);
-//   wingL.set_value(state);
-// }
-
 ///
 // Drive Example
 ///
-void drive_example() {
+void left_auton() {
 //   // The first parameter is target inches
 //   // The second parameter is max speed the robot will drive at
 //   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
@@ -145,7 +140,7 @@ void skills(){
   // }
 }
 
-void blue_auton(){
+void right_auton(){
   // chassis.set_drive_pid(7, DRIVE_SPEED);
   // chassis.wait_drive();
   // chassis.set_turn_pid(-45, TURN_SPEED);
@@ -171,10 +166,11 @@ void blue_auton(){
   elevMotor.move_absolute(-100, 100);
   pros::delay(2000);
 }
-void drive_fwd(){
-  chassis.set_drive_pid(30, DRIVE_SPEED);
-  chassis.wait_drive();
-}
+
+// void drive_fwd(){
+//   chassis.set_drive_pid(30, DRIVE_SPEED);
+//   chassis.wait_drive();
+// }
 
 
 

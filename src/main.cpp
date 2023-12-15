@@ -51,34 +51,10 @@ Drive chassis (
   // ,1
 );
 
-//PID Tuning for the flywheel (unneccessary)
-// l_fly(4, pros::E_MOTOR_GEAR_600, false, pros::E_MOTOR_ENCODER_DEGREES);
-// r_fly(5, pros::E_MOTOR_GEAR_600, true, pros::E_MOTOR_ENCODER_DEGREES);
 void set_fly(int input) {
   l_fly= input;
   r_fly = input;
 }
-// PID flyPID{0.45, 0, 0, 0, "Fly"};
-
-
-
-// void fly_auto(double target) {
-//   flyPID.set_target(target);
-//   ez::exit_output exit = ez::RUNNING;
-//   while (flyPID.exit_condition({l_fly, r_fly}, true) == ez::RUNNING) {
-//     double output = flyPID.compute(l_fly.get_position());
-//     set_fly(output);
-//     target *= 2;
-//     pros::delay(ez::util::DELAY_TIME);
-//   }
-//   // set_fly(0);
-// }
-
-
-//  void setWing(bool state){
-//   wingR.set_value(state);
-//   wingL.set_value(state);
-// }
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -99,12 +75,8 @@ void initialize() {
   default_constants(); // Set the drive to your own constants from autons.cpp!
   exit_condition_defaults(); // Set the exit conditions to your own constants from autons.cpp!
 
-  
-  //p_small_exit_time time, in ms, before exiting p_small_error | p_small_error small error threshold| p_big_exit_time time, in ms, before exiting p_big_error | p_big_error big error threshold |p_velocity_exit_time time, in ms, for velocity to be 0 | p _mA_timeout time, in ms, for is_over_current to be true
-  // flyPID.set_exit_condition(0, 0, 0, 0, 0, 00);
   l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   l_fly.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-
 
   // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
   // chassis.set_left_curve_buttons (pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT); // If using tank, only the left side is used. 
@@ -112,9 +84,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.add_autons({
-    Auton("left side", drive_example),
-    Auton("right side", blue_auton),
-    Auton("drive forward (near side)", drive_fwd),
+    Auton("left side", left_auton),
+    Auton("right side", right_auton),
+    // Auton("drive forward (near side)", drive_fwd),
     Auton("ONLY RUN FOR SKILLS", skills),
     // Auton("Example Turn\n\nTurn 3 times.", turn_example),
     // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
@@ -230,10 +202,6 @@ void opcontrol() {
   bool stopped = true;
 
   while (true) {
-    //master.print(0, 0, "BRUH");
-    
-    // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 5, "                       404");
-
     chassis.tank(); // Tank control
     // chassis.arcade_standard(ez::SPLIT); // Standard split arcade
     // chassis.arcade_standard(ez::SINGLE); // Standard single arcade
@@ -244,16 +212,6 @@ void opcontrol() {
     // Put more user control code here!
     // . . .
 
-    //i still don't know if these control statements work (they do)
-    // if (master.get_digital(DIGITAL_L1)) {
-    //   l_fly.move_velocity(600);
-    //   r_fly.move_velocity(600);
-    // }
-    // else /*if (master.get_digital(DIGITAL_L2))*/ {
-    //   r_fly.brake();
-    //   l_fly.brake();
-    // }
-
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(!toggle){
         elevMotor.move_absolute(-750, 100);
@@ -263,13 +221,6 @@ void opcontrol() {
       }
       toggle = !toggle;
     }
-
-    // if(master.get_digital_new_press(DIGITAL_R2)){
-    //   n++;
-    //   doIndex();
-    // }
-
-    // set_fly(flyPID.compute(l_fly.get_position()));
     
     if(master.get_digital_new_press(DIGITAL_L1)){
       up = true;
@@ -311,6 +262,7 @@ void opcontrol() {
     //   stop.set_value(true);
     //   stopped = false;
     // }
+
     if(master.get_digital_new_press(DIGITAL_UP)){
       stop.set_value(!stopped);
       stopped = !stopped;
