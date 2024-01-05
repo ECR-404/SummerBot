@@ -138,28 +138,30 @@ void skills(){
 
   chassis.set_turn_pid(90, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-12, DRIVE_SPEED);
+  chassis.set_drive_pid(-6, DRIVE_SPEED);
   chassis.wait_drive();
   if(chassis.interfered){
     chassis.set_drive_pid(0, DRIVE_SPEED);
   }  elevMotor.move_absolute(-700, 100);
   pros::delay(1000); 
   l_fly.move_velocity(420);
-  pros::delay(30000);
+  pros::delay(3000);
   l_fly.brake();
-  chassis.set_turn_pid(180, TURN_SPEED);
+  chassis.set_turn_pid(165, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(10, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(110, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(40, DRIVE_SPEED);
+  chassis.set_drive_pid(42, DRIVE_SPEED);
   chassis.wait_drive();
   elevMotor.move_absolute(-700, 100);
   pros::delay(1000);
-  chassis.set_drive_pid(10, DRIVE_SPEED);
+  chassis.set_drive_pid(9, DRIVE_SPEED);
   chassis.wait_drive();
-  elevMotor.move_absolute(-50, 100);
+  elevMotor.move_absolute(0, 100);
+  pros::delay(2000);
+  stop.set_value(true);
 
   // while(1){
   //   while( index_distance.get() > 12){
