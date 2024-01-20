@@ -246,6 +246,8 @@ void opcontrol() {
       down = false;
     }
 
+    //will never brake while toggle is true
+
     if(!master.get_digital(DIGITAL_L2) && !master.get_digital(DIGITAL_L1) && !toggle){
       elevMotor.brake();
     }
