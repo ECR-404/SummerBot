@@ -192,9 +192,9 @@ void opcontrol() {
   //to draw a 404 logo during a match
   pros::screen::set_eraser(COLOR_BLACK);
   pros::screen::erase();
-  pros::screen::set_pen(COLOR_CADET_BLUE);
-  pros::screen::fill_rect(0, 0, 480, 20);
-  pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "404Z!");
+  // pros::screen::set_pen(COLOR_CADET_BLUE);
+  // pros::screen::fill_rect(0, 0, 480, 20);
+  // pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "404Z!");
 
   elevMotor.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
 
@@ -211,6 +211,10 @@ void opcontrol() {
     // . . .
     // Put more user control code here!
     // . . .
+
+    pros::screen::set_pen(COLOR_CADET_BLUE);
+    pros::screen::fill_rect(0, 0, 480, 20);
+    pros::screen::print(pros::E_TEXT_LARGE_CENTER, 6, "404Z!");
 
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(!toggle){
