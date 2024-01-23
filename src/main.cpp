@@ -180,6 +180,7 @@ void autonomous() {
  */
 
 bool up, down = false;
+bool isMoving = false;
 
 void opcontrol() {
 
@@ -223,6 +224,9 @@ void opcontrol() {
       }else{
         set_fly(0);
       }
+      if(!isMoving){
+        isMoving = !isMoving;
+      }
       toggle = !toggle;
     }
     
@@ -248,8 +252,12 @@ void opcontrol() {
 
     //will never brake while toggle is true
 
-    if(!master.get_digital(DIGITAL_L2) && !master.get_digital(DIGITAL_L1) && !toggle){
+    if(!master.get_digital(DIGITAL_L2) && !master.get_digital(DIGITAL_L1) && (!toggle || (!isMoving))){
       elevMotor.brake();
+    }
+
+    if(isMoving && elevMotor.get_position() >= 750){
+      isMoving = false;
     }
     
     
