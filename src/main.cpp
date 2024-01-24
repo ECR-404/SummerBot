@@ -233,6 +233,7 @@ void opcontrol() {
     if(master.get_digital_new_press(DIGITAL_L1)){
       up = true;
       elevMotor.move_absolute(-1600, 100);
+      isMoving = false;
     }
     if(up && master.get_digital(DIGITAL_L1)){
       elevMotor.move_velocity(-100);
@@ -243,6 +244,7 @@ void opcontrol() {
     if(master.get_digital_new_press(DIGITAL_L2)){
       down =true;
       elevMotor.move_absolute(-100, 100);
+      isMoving = false;
     }
     if(down && master.get_digital(DIGITAL_L2)){
       elevMotor.move_velocity(100);
@@ -258,6 +260,7 @@ void opcontrol() {
 
     if(isMoving && elevMotor.get_position() >= 750){
       isMoving = false;
+      std::cout<<elevMotor.get_position();
     }
     
     
