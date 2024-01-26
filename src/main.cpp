@@ -181,6 +181,7 @@ void autonomous() {
 
 bool up, down = false;
 bool isMoving = false;
+float dummy = 0;
 
 void opcontrol() {
 
@@ -219,8 +220,8 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(!toggle){
-        elevMotor.move_absolute(-750, 100);
-        set_fly(400);
+        elevMotor.move_absolute(-650, 100);
+        set_fly(360);
       }else{
         set_fly(0);
       }
@@ -230,23 +231,26 @@ void opcontrol() {
       toggle = !toggle;
     }
     
-    if(master.get_digital_new_press(DIGITAL_L1)){
+    if( master.get_digital_new_press(DIGITAL_L1)){
+      dummy = 0;
       up = true;
       elevMotor.move_absolute(-1600, 100);
       isMoving = false;
+      
     }
-    if(up && master.get_digital(DIGITAL_L1)){
+    if(dummy > 0.5 && up && master.get_digital(DIGITAL_L1)){
       elevMotor.move_velocity(-100);
     }else{
       up = false;
     }
 
     if(master.get_digital_new_press(DIGITAL_L2)){
+      dummy = 0;
       down =true;
       elevMotor.move_absolute(-100, 100);
       isMoving = false;
     }
-    if(down && master.get_digital(DIGITAL_L2)){
+    if( down && master.get_digital(DIGITAL_L2)){
       elevMotor.move_velocity(100);
     }else{
       down = false;
@@ -290,5 +294,6 @@ void opcontrol() {
       toggle = !toggle;    //Flip the toggle to match piston state
     } 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
+    dummy += ez::util::DELAY_TIME;
   }
 }

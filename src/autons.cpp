@@ -83,9 +83,10 @@ void left_auton() {
   chassis.set_drive_pid(-20, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(90,TURN_SPEED);
-  chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
-  elevMotor.move_absolute(-1950, 100);
+  chassis.set_drive_pid(-4, DRIVE_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(-1650, 100);
   pros::delay(3200);
   chassis.set_drive_pid(10, DRIVE_SPEED);
   chassis.wait_drive();
@@ -190,7 +191,7 @@ void right_auton(){
   chassis.set_drive_pid(-8, DRIVE_SPEED);
   chassis.wait_drive();
   
-  elevMotor.move_absolute(-2000, 100);
+  elevMotor.move_absolute(-1850, 100);
   pros::delay(3000);
   chassis.set_drive_pid(15, DRIVE_SPEED);
   // elevMotor.move_relative(500, 100);
