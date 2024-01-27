@@ -220,7 +220,7 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(!toggle){
-        elevMotor.move_absolute(-650, 100);
+        elevMotor.move_absolute(-575, 100);
         set_fly(360);
       }else{
         set_fly(0);
@@ -238,7 +238,7 @@ void opcontrol() {
       isMoving = false;
       
     }
-    if(dummy > 0.5 && up && master.get_digital(DIGITAL_L1)){
+    if(up && master.get_digital(DIGITAL_L1)){
       elevMotor.move_velocity(-100);
     }else{
       up = false;
@@ -250,7 +250,7 @@ void opcontrol() {
       elevMotor.move_absolute(-100, 100);
       isMoving = false;
     }
-    if( down && master.get_digital(DIGITAL_L2)){
+    if(down && master.get_digital(DIGITAL_L2)){
       elevMotor.move_velocity(100);
     }else{
       down = false;

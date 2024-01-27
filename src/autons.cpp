@@ -7,7 +7,7 @@
 /////
 
 
-const int DRIVE_SPEED = 110; // This is 110/127 (around 87% of max speed).  We don't suggest making this 127.
+const int DRIVE_SPEED = 127 ; // This is 110/127 (around 87% of max speed).  We don't suggest making this 127.
                              // If this is 127 and the robot tries to heading correct, it's only correcting by
                              // making one side slower.  When this is 87%, it's correcting by making one side
                              // faster and one side slower, giving better heading correction.
@@ -77,28 +77,33 @@ void left_auton() {
 //   // The second parameter is max speed the robot will drive at
 //   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
 //   // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
-
+  elevMotor.move_absolute(-200, 100);
+  pros::delay(100);
   chassis.set_drive_pid(24, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-20, DRIVE_SPEED);
+  chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_turn_pid(90,TURN_SPEED);
+  chassis.set_drive_pid(9, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-4, DRIVE_SPEED);
+  chassis.set_drive_pid(-25, DRIVE_SPEED);
   chassis.wait_drive();
-  elevMotor.move_absolute(-1650, 100);
+  chassis.set_turn_pid(80,TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(0, DRIVE_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(-1400, 100);
   pros::delay(3200);
   chassis.set_drive_pid(10, DRIVE_SPEED);
   chassis.wait_drive();
-  elevMotor.move_absolute(300, 100);
+  elevMotor.move_absolute(250, 100);
   pros::delay(2500);
-  chassis.set_turn_pid(125, TURN_SPEED);
+  chassis.set_turn_pid(145, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(15, DRIVE_SPEED);
+  chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(120, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(15, DRIVE_SPEED);
+  chassis.set_drive_pid(16, DRIVE_SPEED);
   chassis.wait_drive();
   // pros::delay(500);
   // chassis.set_turn_pid(-10, TURN_SPEED);
@@ -180,24 +185,39 @@ void right_auton(){
   // chassis.wait_drive();
 
   elevMotor.move_absolute(-100, 100);
-  chassis.set_drive_pid(22, DRIVE_SPEED);
+  chassis.set_drive_pid(24, DRIVE_SPEED);
   chassis.wait_drive();
-   chassis.set_turn_pid(20, TURN_SPEED);
+  chassis.set_drive_pid(-5, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(7, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(15, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(-15, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(-70, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-8, DRIVE_SPEED);
+  chassis.set_drive_pid(-6, DRIVE_SPEED);
   chassis.wait_drive();
+  // chassis.set_drive_pid(0.5,DRIVE_SPEED);
+  // chassis.wait_drive();
   
-  elevMotor.move_absolute(-1850, 100);
+  elevMotor.move_absolute(-1450, 100);
   pros::delay(3000);
-  chassis.set_drive_pid(15, DRIVE_SPEED);
+  chassis.set_drive_pid(6, DRIVE_SPEED);
   // elevMotor.move_relative(500, 100);
   chassis.wait_drive();
   elevMotor.move_absolute(-100, 100);
   pros::delay(2000);
+  chassis.set_turn_pid(-150, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(-110, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(18, DRIVE_SPEED);
+  chassis.wait_drive();
+
 }
 
 // void drive_fwd(){
