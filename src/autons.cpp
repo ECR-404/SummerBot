@@ -386,3 +386,8 @@ void right_auton(){
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+void moveElevation(float degrees, float time){
+  //determine normal voltage output
+  //if voltage output is higher than normal, cancel the movement; 
+}
