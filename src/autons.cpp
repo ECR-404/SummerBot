@@ -69,6 +69,23 @@ void modified_exit_condition() {
   chassis.set_exit_condition(chassis.drive_exit, 80, 50, 300, 150, 500, 500);
 }
 
+void moveElevation(float degrees, float time, int speed){
+  //determine normal voltage output
+  //if voltage output is higher than normal, cancel the movement; 
+  elevMotor.move_absolute(degrees, speed);
+  float timer = 0;
+  while(timer < time){
+    if((degrees < 0 && elevMotor.get_current_draw() > 1500)){
+      elevMotor.brake();
+      elevMotor.move_absolute(-550, 100);
+      break;
+    }
+    
+    pros::delay(ez::util::DELAY_TIME);
+    timer += ez::util::DELAY_TIME;
+  }
+}
+
 ///
 // Drive Example
 ///
@@ -79,6 +96,7 @@ void left_auton() {
 //   // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
   elevMotor.move_absolute(0, 100);
   pros::delay(100);
+  std::cout<<elevMotor.get_current_draw();
   //normally 24 but scaled down for lancer comp
   chassis.set_drive_pid(24, DRIVE_SPEED);
   chassis.wait_drive();
@@ -91,12 +109,11 @@ void left_auton() {
   chassis.wait_drive();
   chassis.set_drive_pid(-23, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_turn_pid(80,TURN_SPEED);
+  chassis.set_turn_pid(70,TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
-  float timer = 0;
-  elevMotor.move_absolute(-1400, 100);
+  moveElevation(-1400, 3000, 100);
   /*while(timer < 3200){
     if(timer > 2000 && elevMotor.get_actual_velocity() < 75){
       elevMotor.brake();
@@ -105,21 +122,19 @@ void left_auton() {
     pros::delay(ez::util::DELAY_TIME);
     timer += ez::util::DELAY_TIME;
   }*/
-
-  pros::delay(3200);
   
   chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
   elevMotor.move_absolute(0, 100);
   
-  pros::delay(2500);
+  pros::delay(2000);
   chassis.set_turn_pid(145, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(15, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_turn_pid(120, TURN_SPEED);
+  chassis.set_turn_pid(100, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(19, DRIVE_SPEED);
+  chassis.set_drive_pid(17, DRIVE_SPEED);
   chassis.wait_drive();
   // pros::delay(500);
   // chassis.set_turn_pid(-10, TURN_SPEED);
@@ -164,7 +179,8 @@ void skills(){
   chassis.wait_drive();
   if(chassis.interfered){
     chassis.set_drive_pid(0, DRIVE_SPEED);
-  }  elevMotor.move_absolute(-700, 100);
+  }  
+  elevMotor.move_absolute(-700, 100);
   pros::delay(1000); 
   l_fly.move_velocity(420);
   pros::delay(3000);
@@ -219,16 +235,7 @@ void right_auton(){
   // chassis.wait_drive();
   
   float timer = 0;
-  elevMotor.move_absolute(-1200, 100);
-  while(timer < 3000){
-    if(timer > 2000 && elevMotor.get_voltage() < -100){
-
-      elevMotor.brake();
-      break;
-    }
-    pros::delay(ez::util::DELAY_TIME);
-    timer += ez::util::DELAY_TIME;
-  }
+  moveElevation(-1200, 3000, 100);
   chassis.set_drive_pid(6, DRIVE_SPEED);
   // elevMotor.move_relative(500, 100);
   chassis.wait_drive();
@@ -412,7 +419,4 @@ void right_auton(){
 // Make your own autonomous functions here!
 // . . .
 
-void moveElevation(float degrees, float time){
-  //determine normal voltage output
-  //if voltage output is higher than normal, cancel the movement; 
-}
+

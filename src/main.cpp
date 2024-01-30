@@ -191,6 +191,8 @@ void opcontrol() {
 
   stop.set_value(true);
 
+  float timer = 0;
+
   //to draw a 404 logo during a match
   pros::screen::set_eraser(COLOR_BLACK);
   pros::screen::erase();
@@ -284,7 +286,7 @@ void opcontrol() {
     //   stopped = false;
     // }
 
-    if(master.get_digital_new_press(DIGITAL_UP)){
+    if(timer < 104400 && master.get_digital_new_press(DIGITAL_UP)){
       stop.set_value(!stopped);
       stopped = !stopped;
     }
@@ -294,6 +296,10 @@ void opcontrol() {
       toggle = !toggle;    //Flip the toggle to match piston state
     } 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
-    dummy += ez::util::DELAY_TIME;
+    timer += ez::util::DELAY_TIME;
+
+    if(timer > 104400){
+      stop.set_value(true);
+    }
   }
 }
