@@ -134,7 +134,7 @@ void left_auton() {
   chassis.wait_drive();
   chassis.set_turn_pid(100, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(17, DRIVE_SPEED);
+  chassis.set_drive_pid(15, DRIVE_SPEED);
   chassis.wait_drive();
   // pros::delay(500);
   // chassis.set_turn_pid(-10, TURN_SPEED);
