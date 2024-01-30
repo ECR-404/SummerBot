@@ -105,7 +105,7 @@ void left_auton() {
   chassis.wait_drive();
   chassis.set_drive_pid(7, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_turn_pid(-20, TURN_SPEED);
+  chassis.set_turn_pid(-18, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(-23, DRIVE_SPEED);
   chassis.wait_drive();
@@ -128,7 +128,7 @@ void left_auton() {
   elevMotor.move_absolute(0, 100);
   
   pros::delay(2000);
-  chassis.set_turn_pid(145, TURN_SPEED);
+  chassis.set_turn_pid(155, TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(15, DRIVE_SPEED);
   chassis.wait_drive();
