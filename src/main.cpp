@@ -220,7 +220,7 @@ void opcontrol() {
 
     if(master.get_digital_new_press(DIGITAL_R1)){
       if(!toggle){
-        elevMotor.move_absolute(-575, 100);
+        elevMotor.move_absolute(-650, 100);
         set_fly(360);
       }else{
         set_fly(0);

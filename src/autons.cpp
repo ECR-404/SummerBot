@@ -77,33 +77,49 @@ void left_auton() {
 //   // The second parameter is max speed the robot will drive at
 //   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
 //   // for slew, only enable it when the drive distance is greater then the slew distance + a few inches
-  elevMotor.move_absolute(-200, 100);
+  elevMotor.move_absolute(0, 100);
   pros::delay(100);
+  //normally 24 but scaled down for lancer comp
   chassis.set_drive_pid(24, DRIVE_SPEED);
   chassis.wait_drive();
+  //same as above
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(9, DRIVE_SPEED);
+  chassis.set_drive_pid(7, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-25, DRIVE_SPEED);
+  chassis.set_turn_pid(-20, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(-23, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(80,TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(0, DRIVE_SPEED);
+  chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
+  float timer = 0;
   elevMotor.move_absolute(-1400, 100);
+  /*while(timer < 3200){
+    if(timer > 2000 && elevMotor.get_actual_velocity() < 75){
+      elevMotor.brake();
+      break;
+    }
+    pros::delay(ez::util::DELAY_TIME);
+    timer += ez::util::DELAY_TIME;
+  }*/
+
   pros::delay(3200);
-  chassis.set_drive_pid(10, DRIVE_SPEED);
+  
+  chassis.set_drive_pid(12, DRIVE_SPEED);
   chassis.wait_drive();
-  elevMotor.move_absolute(250, 100);
+  elevMotor.move_absolute(0, 100);
+  
   pros::delay(2500);
   chassis.set_turn_pid(145, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(12, DRIVE_SPEED);
+  chassis.set_drive_pid(15, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(120, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(16, DRIVE_SPEED);
+  chassis.set_drive_pid(19, DRIVE_SPEED);
   chassis.wait_drive();
   // pros::delay(500);
   // chassis.set_turn_pid(-10, TURN_SPEED);
@@ -184,26 +200,35 @@ void right_auton(){
   // chassis.set_turn_pid(-45, TURN_SPEED);
   // chassis.wait_drive();
 
-  elevMotor.move_absolute(-100, 100);
-  chassis.set_drive_pid(24, DRIVE_SPEED);
+  elevMotor.move_absolute(0, 100);
+  chassis.set_drive_pid(22, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(7, DRIVE_SPEED);
+  chassis.set_drive_pid(6, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(15, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-15, DRIVE_SPEED);
+  chassis.set_drive_pid(-17, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(-70, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(-6, DRIVE_SPEED);
+  chassis.set_drive_pid(-5.5, DRIVE_SPEED);
   chassis.wait_drive();
   // chassis.set_drive_pid(0.5,DRIVE_SPEED);
   // chassis.wait_drive();
   
-  elevMotor.move_absolute(-1450, 100);
-  pros::delay(3000);
+  float timer = 0;
+  elevMotor.move_absolute(-1200, 100);
+  while(timer < 3000){
+    if(timer > 2000 && elevMotor.get_voltage() < -100){
+
+      elevMotor.brake();
+      break;
+    }
+    pros::delay(ez::util::DELAY_TIME);
+    timer += ez::util::DELAY_TIME;
+  }
   chassis.set_drive_pid(6, DRIVE_SPEED);
   // elevMotor.move_relative(500, 100);
   chassis.wait_drive();
@@ -211,7 +236,7 @@ void right_auton(){
   pros::delay(2000);
   chassis.set_turn_pid(-150, TURN_SPEED);
   chassis.wait_drive();
-  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.set_drive_pid(14, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_turn_pid(-110, TURN_SPEED);
   chassis.wait_drive();
