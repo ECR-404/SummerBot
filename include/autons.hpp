@@ -6,7 +6,8 @@ extern Drive chassis;
 
 void left_auton();
 void skills();
-void right_auton();   
+void right_auton();
+void leftElims_auton();   
 // void turn_example();
 // void drive_and_turn();
 // void wait_until_change_speed();

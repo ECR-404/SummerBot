@@ -89,6 +89,41 @@ void moveElevation(float degrees, float time, int speed){
 ///
 // Drive Example
 ///
+void leftElims_auton() {
+  setWing(true);
+  pros::delay(200);
+  setWing(false);
+  // chassis.set_drive_pid(22, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_drive_pid(-5, DRIVE_SPEED);
+  // chassis.wait_drive();
+  // chassis.set_drive_pid(7, DRIVE_SPEED);
+  // chassis.wait_drive();
+  chassis.set_drive_pid(15, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(75-60, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(20, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(15-60, TURN_SPEED);
+  chassis.wait_drive();
+  elevMotor.move_absolute(-150, 100);
+  pros::delay(200);
+  chassis.set_drive_pid(17, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(105-60, DRIVE_SPEED);
+  chassis.wait_drive();
+  setWing(true);
+  chassis.set_drive_pid(35, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(200-60, TURN_SPEED);
+  chassis.wait_drive();
+  chassis.set_drive_pid(30, DRIVE_SPEED);
+  chassis.wait_drive();
+  chassis.set_turn_pid(105-60, TURN_SPEED);
+  chassis.wait_drive();
+  setWing(false);
+}
 void left_auton() {
 //   // The first parameter is target inches
 //   // The second parameter is max speed the robot will drive at
@@ -101,6 +136,8 @@ void left_auton() {
   chassis.set_drive_pid(24, DRIVE_SPEED);
   chassis.wait_drive();
   //same as above
+
+  
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(7, DRIVE_SPEED);
@@ -109,7 +146,7 @@ void left_auton() {
   chassis.wait_drive();
   chassis.set_drive_pid(-23, DRIVE_SPEED);
   chassis.wait_drive();
-  chassis.set_turn_pid(70,TURN_SPEED);
+  chassis.set_turn_pid(7,TURN_SPEED);
   chassis.wait_drive();
   chassis.set_drive_pid(-5, DRIVE_SPEED);
   chassis.wait_drive();

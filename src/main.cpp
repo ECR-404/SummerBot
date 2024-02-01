@@ -88,6 +88,7 @@ void initialize() {
     Auton("right side", right_auton),
     // Auton("drive forward (near side)", drive_fwd),
     Auton("ONLY RUN FOR SKILLS", skills),
+    Auton("left side elims", leftElims_auton),
     // Auton("Example Turn\n\nTurn 3 times.", turn_example),
     // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
     // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
@@ -182,6 +183,7 @@ void autonomous() {
 bool up, down = false;
 bool isMoving = false;
 float dummy = 0;
+float timer = 0;
 
 void opcontrol() {
 
@@ -190,8 +192,6 @@ void opcontrol() {
   bool toggle { false }; //This variable will keep state between loops or function calls
 
   stop.set_value(true);
-
-  float timer = 0;
 
   //to draw a 404 logo during a match
   pros::screen::set_eraser(COLOR_BLACK);
@@ -299,7 +299,8 @@ void opcontrol() {
     timer += ez::util::DELAY_TIME;
 
     if(timer > 104400){
-      stop.set_value(true);
+      
+      stop.set_value(false);
     }
   }
 }
